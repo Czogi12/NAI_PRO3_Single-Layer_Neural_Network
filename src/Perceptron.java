@@ -1,8 +1,8 @@
 import java.util.Arrays;
 
 public class Perceptron {
-    private static double ALPHA = 0.5;
-    private static double BETA = 0.5;
+    private static double ALPHA = 0.001;
+    private static double BETA = 0.001;
     private final int dimension;
     private double threshold;
     public double[] weights;
@@ -14,14 +14,15 @@ public class Perceptron {
     public Perceptron(int dimension) {
         this.dimension = dimension;
         this.weights = new double[dimension];
-        this.threshold = 0;
+        this.threshold = 1;
+        resetWeights();
         this.alpha = ALPHA;
         this.beta = BETA;
     }
 
     public void resetWeights() {
         for (int i = 0; i < dimension; i++) {
-            weights[i] = 0.0;
+            weights[i] = 5.0;
         }
         threshold = 0;
     }
@@ -38,12 +39,14 @@ public class Perceptron {
 
     public void train(double[][] inputs, boolean[] labels, int maxAges) {
         int ages = 0;
-//        boolean mistakeWasMade = false;
+        boolean mistakeWasMade = true;
 
-        while (ages++ < maxAges /*&& !mistakeWasMade*/) {
+        while (ages++ < maxAges && mistakeWasMade) {
+            System.out.printf("Age: %d\n", ages);
+            mistakeWasMade = false;
             for (int i = 0; i < inputs.length; i++) {
                 boolean result = predict(inputs[i]);
-//                if (!mistakeWasMade) mistakeWasMade = result != labels[i];
+                if (result != labels[i]) mistakeWasMade = true;
                 adjustWeights(inputs[i], labels[i], result);
             }
         }

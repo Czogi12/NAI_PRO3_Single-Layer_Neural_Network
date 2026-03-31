@@ -33,23 +33,23 @@ public class Main {
 		}
 		var perceptron = new Perceptron(4);
 
-		for (int ages = 0; ages < 10; ages++) {
-			perceptron.resetWeights();
-			var trainingSet = prepareDataset.getTrainingSet();
 
-			perceptron.train(trainingSet, ages);
+		perceptron.resetWeights();
+		var trainingSet = prepareDataset.getTrainingSet();
 
-			var predictionSet = prepareDataset.getTestSet();
-			Boolean[] real = new Boolean[predictionSet.length];
-			Boolean[] predictions = new Boolean[predictionSet.length];
-			for (int i = 0; i < predictionSet.length; i++) {
-				real[i] = predictionSet[i].label();
-				predictions[i] = perceptron.predict(predictionSet[i].vector());
-			}
+		perceptron.train(trainingSet, 10_000);
 
-			double accuracy = EvaluationMetrics.measureAccuracy(real, predictions);
-			System.out.printf("TrainedAges: %d Accuracy: %.2f\n", ages, accuracy);
+		var predictionSet = prepareDataset.getTestSet();
+		Boolean[] real = new Boolean[predictionSet.length];
+		Boolean[] predictions = new Boolean[predictionSet.length];
+		for (int i = 0; i < predictionSet.length; i++) {
+			real[i] = predictionSet[i].label();
+			predictions[i] = perceptron.predict(predictionSet[i].vector());
 		}
+
+		double accuracy = EvaluationMetrics.measureAccuracy(real, predictions);
+		System.out.printf("Accuracy: %.2f\n", accuracy);
+
 
 		SwingUtilities.invokeLater(() -> new GUI(perceptron));
 	}

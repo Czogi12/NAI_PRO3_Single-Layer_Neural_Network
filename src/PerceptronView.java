@@ -70,14 +70,6 @@ public class PerceptronView extends JPanel {
 		double wX = weights[xAxisIndex];
 		double wY = weights[yAxisIndex];
 
-		// Account for non-displayed dimensions fixed at their mean
-		for (int i = 0; i < weights.length; i++) {
-			if (i != xAxisIndex && i != yAxisIndex) {
-				double mean = (maxDimensionLength[i] + minDimensionLength[i]) / 2.0;
-				threshold -= weights[i] * mean;
-			}
-		}
-
 		if (wY == 0.0) {
 			wY = 0.000001;
 		}
