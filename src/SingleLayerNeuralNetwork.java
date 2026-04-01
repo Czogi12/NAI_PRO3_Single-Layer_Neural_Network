@@ -48,7 +48,7 @@ public class SingleLayerNeuralNetwork {
 			return activePerceptron.getLabel();
 		}
 
-		double maxNet = Double.MIN_VALUE;
+		double maxNet = Double.NEGATIVE_INFINITY;
 		Perceptron predictedPerceptron = null;
 
 		for (var perceptron : neurons) {

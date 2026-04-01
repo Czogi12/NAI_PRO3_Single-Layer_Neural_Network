@@ -7,7 +7,7 @@ public class EvaluationMetrics<T> {
 //		FN	TN
 		for (int i = 0; i < realClasses.length; i++) {
 			boolean isPositive = predictedClasses[i];
-			boolean isFalse = realClasses[i] == predictedClasses[i];
+			boolean isFalse = realClasses[i] != predictedClasses[i];
 
 			int y = isPositive ? 0 : 1;
 			int x = y ^ (isFalse ? 1 : 0);
@@ -37,7 +37,7 @@ public class EvaluationMetrics<T> {
 		return 2 * p * r / (p + r);
 	}
 
-	public static <T> double measureAccuracy(T[] realClasses, T[] predictedClasses) {
+	public static double measureAccuracy(boolean[] realClasses, boolean[] predictedClasses) {
 		if (realClasses.length != predictedClasses.length) {
 			throw new IllegalArgumentException("Number of realClasses and number of predictedClasses must be equal");
 		}
@@ -45,7 +45,7 @@ public class EvaluationMetrics<T> {
 		double matched = 0;
 
 		for (int i = 0; i < realClasses.length; i++) {
-			if (realClasses[i].equals(predictedClasses[i])) {
+			if (realClasses[i] == (predictedClasses[i])) {
 				matched++;
 			}
 		}

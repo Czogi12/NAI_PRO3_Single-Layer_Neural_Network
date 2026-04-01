@@ -1,4 +1,7 @@
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.IntStream;
 
 public class Perceptron {
 	private static final double DEFAULT_ALPHA = 0.001;
@@ -33,7 +36,7 @@ public class Perceptron {
 
 	public void resetWeights() {
 		for (int i = 0; i < dimension; i++) {
-			weights[i] = 5.0;
+			weights[i] =  Math.random() * 2 - 1;
 		}
 		threshold = 0;
 	}
@@ -53,7 +56,6 @@ public class Perceptron {
 		boolean mistakeWasMade = true;
 
 		while (ages++ < maxAges && mistakeWasMade) {
-//			System.out.printf("Age: %d\n", ages);
 			mistakeWasMade = false;
 
 			for (int i = 0; i < inputs.length; i++) {

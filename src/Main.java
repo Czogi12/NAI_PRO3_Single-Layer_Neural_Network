@@ -14,7 +14,8 @@ public class Main {
 		var locales = List.of(
 				new Locale("pl"),
 				new Locale("en"),
-				new Locale("de")
+				new Locale("de"),
+				new Locale("sv")
 		);
 
 		Map<Locale, String> localeToLabelMap = new HashMap<>();
@@ -77,12 +78,37 @@ public class Main {
 
 		var network = new SingleLayerNeuralNetwork(
 				locales.stream().map(l -> new Perceptron(26, localeToLabelMap.get(l))).toList(),
-				0.001,
-				0.001
+				0.01,
+				0.01
 		);
-		network.train(prepareDataset.getTrainingSet(), 100_000);
 
-		System.out.println(network.predict(convertLineToInput("Tests vary in style, rigor and requirements. There is no general consensus or invariable")));
+		network.train(prepareDataset.getTrainingSet(), 10_000);
+
+		for (var locale : locales) {
+			String localeLabel = localeToLabelMap.get(locale);
+			System.out.printf("Testing for %s\n", locale.getDisplayLanguage());
+			var testSet = prepareDataset.getTestSet();
+			boolean[] expectedClasses = new boolean[testSet.length];
+			boolean[] predictedClasses = new boolean[testSet.length];
+			for (int i = 0; i < testSet.length; i++) {
+				String prediction = network.predict(testSet[i].vector());
+				expectedClasses[i]  = testSet[i].label().equals(localeLabel);
+				predictedClasses[i] = prediction.equals(localeLabel);
+			}
+
+			System.out.printf("\tAccuracy: %.4f\n", EvaluationMetrics.measureAccuracy(expectedClasses, predictedClasses));
+			System.out.printf("\tPrecision: %.4f\n", EvaluationMetrics.measurePrecision(expectedClasses, predictedClasses));
+			System.out.printf("\tRecall:    %.4f\n", EvaluationMetrics.measureRecall(expectedClasses, predictedClasses));
+			System.out.printf("\tF-Score:   %.4f\n", EvaluationMetrics.measureFScore(expectedClasses, predictedClasses));
+		}
+
+
+		Scanner sc = new Scanner(System.in);
+		String line = null;
+		while ((line = sc.nextLine()) != null) {
+			if (line.equals("exit")) break;
+			System.out.println(network.predict(convertLineToInput(line)));
+		}
 	}
 
 	private static double[] convertLineToInput(String line) {
