@@ -21,13 +21,13 @@ public class EvaluationMetrics<T> {
 	public static double measurePrecision(boolean[] realClasses, boolean[] predictedClasses) {
 		var confusionMatrix = createConfusionMatrix(realClasses, predictedClasses);
 		// TP / FP + TP
-		return (double) confusionMatrix[0][0] / (double) confusionMatrix[0][1] + (double) confusionMatrix[0][0];
+		return (double) confusionMatrix[0][0] / ((double) confusionMatrix[0][1] + (double) confusionMatrix[0][0]);
 	}
 
 	public static double measureRecall(boolean[] realClasses, boolean[] predictedClasses) {
 		var confusionMatrix = createConfusionMatrix(realClasses, predictedClasses);
 		// TP / FN + TP
-		return (double) confusionMatrix[0][0] / (double) confusionMatrix[1][0] + (double) confusionMatrix[0][0];
+		return (double) confusionMatrix[0][0] / ((double) confusionMatrix[1][0] + (double) confusionMatrix[0][0]);
 	}
 
 	public static double measureFScore(boolean[] realClasses, boolean[] predictedClasses) {
