@@ -1,7 +1,7 @@
 import java.util.Arrays;
 import java.util.Objects;
 
-public record Data(boolean label, double[] vector) implements Comparable<Data> {
+public record Data(String label, double[] vector) implements Comparable<Data> {
     @Override
     public String toString() {
         return "Data{" + "label=" + label + ", vector=" + Arrays.toString(vector) + '}';
@@ -11,7 +11,7 @@ public record Data(boolean label, double[] vector) implements Comparable<Data> {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Data data = (Data) o;
-        return label == data.label && Objects.deepEquals(vector, data.vector);
+        return label.equals(data.label) && Objects.deepEquals(vector, data.vector);
     }
 
     @Override
@@ -21,10 +21,8 @@ public record Data(boolean label, double[] vector) implements Comparable<Data> {
 
     @Override
     public int compareTo(Data o) {
-        if (label == o.label) return 0;
-        if (label) {
-            return 1;
-        }
-        return -1;
+        var labelCompare = label.compareTo(o.label);
+        if (labelCompare != 0) return labelCompare;
+        return Double.compare(vector.length, o.vector.length);
     }
 }

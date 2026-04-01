@@ -15,7 +15,7 @@ public class PrepareDataset {
 		this.trainingSet = new Data[trainingSize];
 		this.testSet = new Data[list.size() - trainingSize];
 
-		Map<Boolean, Queue<Data>> map = new HashMap<>();
+		Map<String, Queue<Data>> map = new HashMap<>();
 		for (Data data : list) {
 			if (!map.containsKey(data.label())) {
 				map.put(data.label(), new PriorityQueue<>());
@@ -27,7 +27,7 @@ public class PrepareDataset {
 		int testSetIndex = 0;
 
 		while (trainingSetIndex < trainingSet.length || testSetIndex < testSet.length) {
-			for (Boolean label : map.keySet()) {
+			for (String label : map.keySet()) {
 				Data current = map.get(label).poll();
 				if (current == null) continue;
 				if (trainingSetIndex < trainingSet.length) {
