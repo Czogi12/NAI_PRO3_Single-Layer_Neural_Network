@@ -1,11 +1,20 @@
 import java.util.Arrays;
 
 public class Perceptron {
-    private static double ALPHA = 0.001;
-    private static double BETA = 0.001;
+    private static final double DEFAULT_ALPHA = 0.001;
+    private static final double DEFAULT_BETA = 0.001;
     private final int dimension;
     private double threshold;
     public double[] weights;
+
+    public void setAlpha(double alpha) {
+        this.alpha = alpha;
+    }
+
+    public void setBeta(double beta) {
+        this.beta = beta;
+    }
+
     private double alpha;
     private double beta;
     private Data[] trainingSet;
@@ -16,8 +25,8 @@ public class Perceptron {
         this.weights = new double[dimension];
         this.threshold = 1;
         resetWeights();
-        this.alpha = ALPHA;
-        this.beta = BETA;
+        this.alpha = DEFAULT_ALPHA;
+        this.beta = DEFAULT_BETA;
     }
 
     public void resetWeights() {
